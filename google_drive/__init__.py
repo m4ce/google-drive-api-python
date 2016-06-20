@@ -24,7 +24,11 @@ class DriveAPI:
         self.oauth_scope = "https://www.googleapis.com/auth/drive.file"
 
     if 'oauth_token_file' not in kwargs:
-      self.oauth_token_file = os.path.expanduser("~/.google-drive-oauth.json")
+      token_file = "~/.google-drive-oauth.json"
+    else:
+      token_file = kwargs['oauth_token_file']
+
+    self.oauth_token_file = os.path.abspath(os.path.expanduser(token_file))
 
     self.service = None
     self.tree = {}
