@@ -24,7 +24,7 @@ class DriveAPI:
         self.oauth_scope = "https://www.googleapis.com/auth/drive.file"
 
     if 'oauth_token_file' not in kwargs:
-      self.oauth_token_file = os.path.expanduser('~') + "/.google-drive-oauth.json"
+      self.oauth_token_file = os.path.expanduser("~/.google-drive-oauth.json")
 
     self.service = None
     self.tree = {}
@@ -121,7 +121,7 @@ class DriveAPI:
       'mimeType': "application/vnd.google-apps.folder"
     }
 
-    if 'parent_id' in kwargs:
+    if 'parent_id' in kwargs and kwargs['parent_id']:
       body['parents'] = [{'id': kwargs['parent_id']}]
 
     folder = self.service.files().insert(body = body).execute()
@@ -183,7 +183,7 @@ class DriveAPI:
       return self.service.files().update(fileId = files[0]['id'], media_body = media_body).execute()
     else:
       body = {'title': title}
-      if 'parent_id' in kwargs:
+      if 'parent_id' in kwargs and kwargs['parent_id']:
         body.update({'parents': [{'id': kwargs['parent_id']}]})
 
       return self.service.files().insert(body = body, media_body = media_body).execute()
