@@ -177,6 +177,11 @@ class DriveAPI:
     else:
       media_body = MediaFileUpload(local_file)
 
+    if 'parent_id' in kwargs and kwargs['parent_id']:
+      parent_id = kwargs['parent_id']
+    else:
+      parent_id = None
+
     # check if file exists. If it does, update the existing file
     files = self.list_files(title = title, parent_id = parent_id)
     if len(files) > 0:
@@ -184,6 +189,6 @@ class DriveAPI:
     else:
       body = {'title': title}
       if 'parent_id' in kwargs and kwargs['parent_id']:
-        body.update({'parents': [{'id': kwargs['parent_id']}]})
+        body.update({'parents': [{'id': parent_id}]})
 
       return self.service.files().insert(body = body, media_body = media_body).execute()
